@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#06112b">
+<title>DESI MAL - Video Hub</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script id="monetag-sdk" src="https://libtl.com/sdk.js" data-zone="12261981" data-sdk="show_12261981"></script>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#06112b;color:#fff;font-family:Arial,sans-serif}
+.app{max-width:620px;margin:auto;padding:14px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.logo{width:55px;height:55px;border-radius:16px;background:linear-gradient(135deg,#00d9ed,#1263ff,#a000ff);display:grid;place-items:center;font-size:30px}
+.brand{flex:1}
+.brand b{font-size:26px}
+.brand small{display:block;color:#9db4e9;letter-spacing:5px}
+.online{color:#16e6a0;border:1px solid #16e6a0;border-radius:20px;padding:8px;font-size:12px}
+.hero{padding:20px;border-radius:19px;background:linear-gradient(115deg,#08bfe9,#0647cf,#8311e7);position:relative;overflow:hidden}
+.hero:after{content:"🎬 🍿";position:absolute;right:8px;top:50px;font-size:48px}
+.hero b{font-size:18px;font-style:italic}
+.hero h1{font-size:44px;color:#ffe331;margin:0}
+.hero h3{font-size:19px;margin:8px 0}
+.hero p{font-size:13px;max-width:70%;line-height:1.5}
+.heading{display:flex;align-items:center;gap:9px;margin:20px 2px 9px}
+.heading h2{font-size:21px;flex:1;margin:0}
+.tag{font-size:10px;border:1px solid #ffca16;color:#ffe044;border-radius:20px;padding:6px}
+.feature,.video-item,.playerbox{background:#111e3c;border:1px solid #2b3b63;border-radius:16px;padding:10px}
+.feature{display:flex;align-items:center;gap:12px}
+.thumb{width:39%;height:105px;border-radius:12px;background:linear-gradient(135deg,#0645a8,#7c22e9);display:grid;place-items:center;font-size:35px;background-size:cover;background-position:center}
+.feature-info{flex:1;min-width:0}
+.feature-info b{font-size:17px}
+.feature-info small{display:block;color:#aebde0;margin-top:6px}
+.arrow{font-size:28px;background:#29395e;border-radius:50%;padding:5px 12px}
+.video-list{display:grid;gap:9px;margin-top:10px}
+.video-item{display:flex;align-items:center;gap:10px}
+.vthumb{width:80px;height:58px;border-radius:9px;background:linear-gradient(135deg,#0757b8,#8c19de);background-size:cover;background-position:center;display:grid;place-items:center;flex-shrink:0}
+.vinfo{flex:1;min-width:0}
+.vinfo small{display:block;color:#aebde0;margin-top:5px}
+button{cursor:pointer}
+.btn{width:100%;border:0;border-radius:30px;padding:14px;color:#fff;font-size:17px;font-weight:bold;background:linear-gradient(100deg,#00aef4,#096cff,#9716f4)}
+.btn:disabled{opacity:.55}
+.smallbtn{border:1px solid #526996;background:#1a2c52;color:white;border-radius:9px;padding:9px 11px}
+.screen{display:none}
+.screen.active{display:block}
+.verify-card{margin-top:35px;text-align:center;padding:24px 17px;border:1px solid #344b7b;background:#14254a;border-radius:22px}
+
+/* DESI MAL LOGO */
+.verify-logo{
+ width:86px;height:86px;margin:0 auto 15px;
+ border-radius:25px;
+ background:linear-gradient(135deg,#00d9ed,#1263ff 55%,#a000ff);
+ display:grid;place-items:center;
+ box-shadow:0 0 30px #087cff55;
+}
+.verify-logo-inner{
+ width:70px;height:70px;border-radius:20px;
+ background:#071532;display:grid;place-items:center;
+}
+.verify-logo-inner span{font-size:38px;color:white;margin-left:5px}
+
+.verify-card h2{font-size:24px}
+.verify-card p,.success p{color:#aebde0;font-size:13px;line-height:1.5}
+.steps{display:flex;gap:7px;margin:18px 0}
+.step{height:7px;border-radius:9px;background:#2a3b63;flex:1}
+.step.done{background:linear-gradient(90deg,#08d8ef,#8e24ff)}
+.success{display:none;text-align:center;padding:28px 15px}
+.check{margin:auto;width:78px;height:78px;border-radius:50%;display:grid;place-items:center;font-size:43px;background:#0c513f;border:2px solid #1ce6a2;color:#1cf0ad}
+.success h2{color:#20e8a4;font-size:27px}
+.playerbox{margin-top:12px}
+.playerbox video{width:100%;max-height:430px;background:#000;border-radius:10px}
+.playerbox p{font-size:12px;color:#aebde0}
+.admin{margin-top:22px;border:1px solid #435a8a;border-radius:16px;padding:13px;background:#101d39}
+.admin input,.admin textarea{width:100%;padding:11px;margin:5px 0 10px;border-radius:9px;border:1px solid #3b4e78;background:#07132c;color:white}
+.note{font-size:11px;color:#aebde0;line-height:1.5}
+.footer{text-align:center;color:#91a4d2;font-size:10px;letter-spacing:2px;margin:25px 0}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#1a2d51;border:1px solid #536b9c;padding:11px 15px;border-radius:12px;font-size:12px;display:none;z-index:10;max-width:90%;text-align:center}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header class="top" id="top">
+ <div class="logo">▶</div>
+ <div class="brand"><b>DESI MAL</b><small>VIDEO HUB</small></div>
+ <div class="online">● ONLINE</div>
+</header>
+
+<section class="screen active" id="verifyScreen">
+ <div class="verify-card" id="verifyCard">
+
+  <div class="verify-logo">
+   <div class="verify-logo-inner">
+    <span>▶</span>
+   </div>
+  </div>
+
+  <h2>Quick Verification</h2>
+  <p>অ্যাপে প্রবেশের আগে ৩টি বিজ্ঞাপন ধাপ সম্পন্ন করে ভেরিফাই করুন।</p>
+
+  <div class="steps">
+   <span class="step" id="s1"></span>
+   <span class="step" id="s2"></span>
+   <span class="step" id="s3"></span>
+  </div>
+
+  <p>Ad verification: <b id="verifyCount">0 / 3</b></p>
+
+  <button class="btn" id="verifyBtn" onclick="runVerifyAd()">
+   ▶ Start verification 1
+  </button>
+
+  <p id="verifyHint">বিজ্ঞাপন সম্পন্ন হলে পরের ধাপ চালু হবে।</p>
+ </div>
+
+ <div class="success" id="verifiedBox">
+  <div class="check">✓</div>
+  <h2>VERIFIED</h2>
+  <p>তোমার ভেরিফিকেশন সফল হয়েছে। এখন অ্যাপে প্রবেশ করতে পারো।</p>
+  <button class="btn" onclick="enterApp()">GO TO APP →</button>
+ </div>
+</section>
+
+<section class="screen" id="appScreen">
+
+ <div class="hero">
+  <b>YOUR ENTERTAINMENT</b>
+  <h1>SPACE</h1>
+  <hr>
+  <h3>Watch. Discover. Enjoy.</h3>
+  <p>A simple video hub for gaming, tutorials and everyday entertainment.</p>
+ </div>
+
+ <div class="heading">
+  <span>⭐</span>
+  <h2 id="listHeading">Featured video</h2>
+  <span class="tag">🏆 EDITOR'S PICK</span>
+ </div>
+
+ <div id="catalogView">
+  <div class="feature" onclick="openFeatured()">
+   <div class="thumb" id="featuredThumb">▶</div>
+   <div class="feature-info">
+    <b id="featuredTitle">Gameplay Highlights</b>
+    <small id="featuredDesc">Your next video is waiting.</small>
+   </div>
+   <div class="arrow">›</div>
+  </div>
+
+  <div class="heading">
+   <span>🎞️</span><h2>All videos</h2>
+  </div>
+  <div class="video-list" id="videoList"></div>
+ </div>
+
+ <div id="singleView" style="display:none">
+  <div class="playerbox">
+   <video id="mainPlayer" controls playsinline></video>
+   <h3 id="singleTitle"></h3>
+   <p id="singleDesc"></p>
+  </div>
+  <button class="smallbtn" onclick="backToCatalog()">← Back to all videos</button>
+ </div>
+
+ <div class="footer">DESI MAL VIDEO HUB · 2026</div>
+
+ <div class="admin" id="adminPanel" style="display:none">
+  <h3>⚙ Admin Panel</h3>
+  <input id="adminPassword" type="password" placeholder="Admin password">
+  <button class="smallbtn" onclick="unlockAdmin()">Unlock panel</button>
+
+  <div id="adminForm" style="display:none">
+   <input id="vTitle" placeholder="Video title">
+   <textarea id="vDesc" rows="2" placeholder="Video description"></textarea>
+   <input id="vUrl" type="url" placeholder="Public video URL (https://...)">
+   <input id="vThumb" type="url" placeholder="Thumbnail image URL (optional)">
+   <button class="smallbtn" onclick="addVideo()">Add video</button>
+   <div id="addedLinks"></div>
+   <p class="note">
+    প্রতিটি ভিডিওর আলাদা Share Link কপি করে Telegram-এ দিতে পারবে।
+    এই সংস্করণে ভিডিও তালিকা শুধু এই ব্রাউজারে থাকে।
+    সবার জন্য sync করতে Backend ও Database লাগবে।
+   </p>
+  </div>
+ </div>
+</section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ZONE="12261981";
+const ADMIN_PASSWORD="658763";
+
+const tg=window.Telegram?.WebApp;
+if(tg){tg.ready();tg.expand();}
+
+const $=id=>document.getElementById(id);
+
+let verifyDone=0;
+let headerTap=0;
+
+let videos=JSON.parse(
+ localStorage.getItem("desimal_videos_v1")||"[]"
+);
+
+const params=new URLSearchParams(location.search);
+const shared=params.get("video");
+
+const sharedData=shared?{
+ id:shared,
+ title:params.get("title")||"Shared video",
+ desc:params.get("desc")||"",
+ url:params.get("src")||"",
+ thumb:params.get("thumb")||""
+}:null;
+
+function toast(m){
+ $("toast").textContent=m;
+ $("toast").style.display="block";
+ setTimeout(()=>$("toast").style.display="none",3000);
+}
+
+/* MONETAG SDK LOAD CHECK */
+function sdkReady(){
+ return typeof window["show_"+ZONE]==="function";
+}
+
+function waitForMonetag(ms=15000){
+ return new Promise((resolve,reject)=>{
+  if(sdkReady())return resolve();
+
+  const start=Date.now();
+
+  const timer=setInterval(()=>{
+   if(sdkReady()){
+    clearInterval(timer);
+    resolve();
+   }else if(Date.now()-start>=ms){
+    clearInterval(timer);
+    reject(new Error("Monetag SDK load timeout"));
+   }
+  },250);
+ });
+}
+
+/* VERIFICATION */
+function updateVerify(){
+ $("verifyCount").textContent=verifyDone+" / 3";
+
+ for(let i=1;i<=3;i++){
+  $("s"+i).classList.toggle("done",i<=verifyDone);
+ }
+
+ if(verifyDone>=3){
+  $("verifyCard").style.display="none";
+  $("verifiedBox").style.display="block";
+ }
+}
+
+async function runVerifyAd(){
+ if(verifyDone>=3)return;
+
+ const b=$("verifyBtn");
+ b.disabled=true;
+ b.textContent="Loading Monetag…";
+
+ try{
+  await waitForMonetag();
+
+  const showAd=window["show_"+ZONE];
+
+  // SDK call resolution is a client-side signal only.
+  // It is NOT server-verified reward proof.
+  await showAd();
+
+  verifyDone++;
+  updateVerify();
+
+  $("verifyHint").textContent=
+   verifyDone<3
+   ?"এই ধাপ শেষ। পরের বিজ্ঞাপনটি চালু করো।"
+   :"ভেরিফিকেশন সম্পন্ন!";
+
+ }catch(e){
+  $("verifyHint").textContent=
+   "Monetag বিজ্ঞাপন লোড/সম্পন্ন হয়নি। HTTPS হোস্টিং, Zone ID ও SDK সেটআপ পরীক্ষা করো।";
+
+  toast("Monetag SDK পাওয়া যায়নি বা বিজ্ঞাপন চালু হয়নি।");
+ }
+
+ b.disabled=false;
+
+ if(verifyDone<3){
+  b.textContent="▶ Start verification "+(verifyDone+1);
+ }
+}
+
+function enterApp(){
+ $("verifyScreen").classList.remove("active");
+ $("appScreen").classList.add("active");
+
+ if(sharedData){
+  $("catalogView").style.display="none";
+  showSingle(sharedData);
+ }else{
+  renderCatalog();
+ }
+}
+
+/* VIDEO SYSTEM */
+function safeUrl(u){
+ try{
+  let x=new URL(u);
+  return ["https:","http:"].includes(x.protocol)?x.href:"";
+ }catch(e){
+  return "";
+ }
+}
+
+function renderCatalog(){
+ $("catalogView").style.display="block";
+ $("singleView").style.display="none";
+
+ if(videos.length){
+  let v=videos[0];
+
+  $("featuredTitle").textContent=v.title;
+  $("featuredDesc").textContent=v.desc||"Tap to watch";
+
+  if(v.thumb){
+   $("featuredThumb").style.backgroundImage=`url("${safeUrl(v.thumb)}")`;
+   $("featuredThumb").textContent="";
+  }
+ }
+
+ $("videoList").innerHTML="";
+
+ videos.forEach(v=>{
+  let item=document.createElement("div");
+  item.className="video-item";
+
+  let th=document.createElement("div");
+  th.className="vthumb";
+  th.textContent="▶";
+
+  if(v.thumb){
+   th.style.backgroundImage=`url("${safeUrl(v.thumb)}")`;
+  }
+
+  let info=document.createElement("div");
+  info.className="vinfo";
+
+  let title=document.createElement("b");
+  title.textContent=v.title;
+
+  let desc=document.createElement("small");
+  desc.textContent=v.desc||"Video";
+
+  info.append(title,desc);
+
+  let btn=document.createElement("button");
+  btn.className="smallbtn";
+  btn.textContent="Open";
+  btn.onclick=()=>showSingle(v);
+
+  item.append(th,info,btn);
+  $("videoList").append(item);
+ });
+}
+
+function showSingle(v){
+ let url=safeUrl(v.url);
+
+ if(!url){
+  toast("এই ভিডিওর Public URL নেই।");
+  return;
+ }
+
+ $("catalogView").style.display="none";
+ $("singleView").style.display="block";
+ $("listHeading").textContent="Video";
+
+ $("singleTitle").textContent=v.title;
+ $("singleDesc").textContent=v.desc||"";
+
+ $("mainPlayer").src=url;
+ $("mainPlayer").load();
+}
+
+function openFeatured(){
+ if(videos.length){
+  showSingle(videos[0]);
+ }else{
+  toast("Admin এখনো কোনো ভিডিও যোগ করেনি।");
+ }
+}
+
+function backToCatalog(){
+ history.replaceState({},"",location.pathname);
+ $("singleView").style.display="none";
+ $("catalogView").style.display="block";
+ renderCatalog();
+}
+
+/* VIDEO SHARE LINK */
+function makeShareLink(v){
+ let u=new URL(location.href);
+
+ u.search="";
+ u.searchParams.set("video",v.id);
+ u.searchParams.set("title",v.title);
+ u.searchParams.set("desc",v.desc||"");
+ u.searchParams.set("src",v.url);
+
+ if(v.thumb){
+  u.searchParams.set("thumb",v.thumb);
+ }
+
+ return u.href;
+}
+
+async function copyText(t){
+ try{
+  await navigator.clipboard.writeText(t);
+  toast("Video link copied!");
+ }catch(e){
+  let x=document.createElement("textarea");
+  x.value=t;
+  document.body.append(x);
+  x.select();
+  document.execCommand("copy");
+  x.remove();
+  toast("Video link copied!");
+ }
+}
+
+/* ADMIN */
+function addVideo(){
+ let title=$("vTitle").value.trim();
+ let desc=$("vDesc").value.trim();
+ let url=safeUrl($("vUrl").value.trim());
+ let thumb=safeUrl($("vThumb").value.trim());
+
+ if(!title||!url){
+  toast("Title এবং Public video URL দিতে হবে।");
+  return;
+ }
+
+ let v={
+  id:"v"+Date.now().toString(36),
+  title,desc,url,thumb
+ };
+
+ videos.unshift(v);
+
+ localStorage.setItem(
+  "desimal_videos_v1",
+  JSON.stringify(videos)
+ );
+
+ renderCatalog();
+
+ let row=document.createElement("p");
+ row.className="note";
+ row.textContent=title+" — ";
+
+ let cp=document.createElement("button");
+ cp.className="smallbtn";
+ cp.textContent="Copy video link";
+ cp.onclick=()=>copyText(makeShareLink(v));
+
+ row.append(cp);
+ $("addedLinks").prepend(row);
+
+ $("vTitle").value="";
+ $("vDesc").value="";
+ $("vUrl").value="";
+ $("vThumb").value="";
+
+ toast("Video added.");
+}
+
+function unlockAdmin(){
+ if($("adminPassword").value===ADMIN_PASSWORD){
+  $("adminForm").style.display="block";
+  toast("Admin panel unlocked");
+ }else{
+  toast("Wrong password");
+ }
+}
+
+$("top").addEventListener("click",()=>{
+ headerTap++;
+
+ if(headerTap>=5){
+  $("adminPanel").style.display="block";
+  headerTap=0;
+ }
+});
+</script>
+</body>
+</html>
